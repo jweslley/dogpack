@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Monit cluster management tool"/>
+  <meta name="author" content="Jonhnny Weslley <http://jonhnnyweslley.net>"/>
+
+  <title>Dogpack</title>
+
+  <link href="css/dogpack.css" rel="stylesheet" media="screen">
+</head>
+<body>
+  <script type="text/x-handlebars">
+    <header class="navbar navbar-inverse navbar-fixed-top dp-nav">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Dogpack</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="container">
+      <div class="row">
+        <div class="col-md-12">
+          {{outlet}}
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <ul class="footer-links">
+          <li>{{#link-to 'about'}}About{{/link-to}}</li>
+        </ul>
+      </div>
+    </footer>
+  </script>
+
+  <script type="text/x-handlebars" id="index">
+    <div class="list-group">
+      {{#each model}}
+        {{#link-to 'monit' server.localhostname}}
+          <div class="list-group-item {{unbound server-class this}}">
+            <h4 class="list-group-item-heading">
+              <span class="status-title">{{server.localhostname}}</span>
+            </h4>
+            <p class="list-group-item-text">
+              {{format-filesize platform.memory}} - {{ip_address}}
+            </p>
+            <p class="list-group-item-text">
+              {{platform.name}} {{platform.release}} {{platform.machine}}
+            </p>
+          </div>
+        {{/link-to}}
+      {{/each}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="monit">
+    <div class="list-group">
+      {{#link-to 'index' class="list-group-item list-group-item-icon"}}
+        <span class="glyphicon glyphicon-chevron-left"></span>
+        <h4 class="list-group-item-heading">
+          <span class="status-title">{{server.localhostname}}</span>
+        </h4>
+        <p class="list-group-item-text">
+          {{format-filesize platform.memory}} - {{ip_address}}
+        </p>
+        <p class="list-group-item-text">
+          {{platform.name}} {{platform.release}} {{platform.machine}}
+        </p>
+      {{/link-to}}
+      {{#each services}}
+        <a class="list-group-item {{unbound service-class this}}">
+          <span class="badge">{{service-type type}}</span>
+          <h4 class="list-group-item-heading">
+            <span class="status-title">{{name}}</span>
+          </h4>
+          <p class="list-group-item-text">{{action-name pending_action}}</p>
+          <p class="list-group-item-text">{{service-status this}}</p>
+          {{#if monitor }}
+            <button class="btn" {{action 'unmonitor' name}}>Unmonitor</button>
+          {{else}}
+            <button class="btn" {{action 'monitor' name}}>Monitor</button>
+          {{/if}}
+        </a>
+      {{/each}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="about">
+    <h3>About</h3>
+  </script>
+
+  <script src="js/dogpack.js"></script>
+</body>
+</html>

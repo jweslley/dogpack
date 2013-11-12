@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<monit id="782906abe0690f94dfce0752195640f3" incarnation="1382272025" version="5.5">
+  <server>
+    <uptime>576</uptime>
+    <poll>60</poll>
+    <startdelay>0</startdelay>
+    <localhostname>myhost.mydomain.tld</localhostname>
+    <controlfile>/home/jweslley/code/monit/monitrc</controlfile>
+    <httpd>
+      <address>localhost</address>
+      <port>2812</port>
+      <ssl>0</ssl>
+    </httpd>
+    <credentials>
+      <username>admin</username>
+      <password>monit</password>
+    </credentials>
+  </server>
+  <platform>
+    <name>Linux</name>
+    <release>3.11.4-1-ARCH</release>
+    <version>#1 SMP PREEMPT Sat Oct 5 21:22:51 CEST 2013</version>
+    <machine>x86_64</machine>
+    <cpu>8</cpu>
+    <memory>8081312</memory>
+    <swap>7999484</swap>
+  </platform>
+  <services>
+    <service name="myhost.mydomain.tld">
+      <type>5</type>
+      <collected_sec>1382272565</collected_sec>
+      <collected_usec>385252</collected_usec>
+      <status>0</status>
+      <status_hint>0</status_hint>
+      <monitor>1</monitor>
+      <monitormode>0</monitormode>
+      <pendingaction>0</pendingaction>
+    </service>
+    <service name="bash_history">
+      <type>2</type>
+      <collected_sec>1382272565</collected_sec>
+      <collected_usec>385270</collected_usec>
+      <status>0</status>
+      <status_hint>0</status_hint>
+      <monitor>1</monitor>
+      <monitormode>0</monitormode>
+      <pendingaction>0</pendingaction>
+    </service>
+    <service name="dhcpcd">
+      <type>3</type>
+      <collected_sec>1382272565</collected_sec>
+      <collected_usec>385323</collected_usec>
+      <status>0</status>
+      <status_hint>0</status_hint>
+      <monitor>1</monitor>
+      <monitormode>0</monitormode>
+      <pendingaction>0</pendingaction>
+    </service>
+    <service name="home">
+      <type>0</type>
+      <collected_sec>1382272565</collected_sec>
+      <collected_usec>385470</collected_usec>
+      <status>0</status>
+      <status_hint>0</status_hint>
+      <monitor>1</monitor>
+      <monitormode>0</monitormode>
+      <pendingaction>0</pendingaction>
+    </service>
+    <service name="bin">
+      <type>1</type>
+      <collected_sec>1382272565</collected_sec>
+      <collected_usec>385491</collected_usec>
+      <status>0</status>
+      <status_hint>0</status_hint>
+      <monitor>1</monitor>
+      <monitormode>0</monitormode>
+      <pendingaction>0</pendingaction>
+    </service>
+  </services>
+  <servicegroups>
+    <servicegroup name="server">
+      <service>home</service>
+      <service>dhcpcd</service>
+      <service>bash_history</service>
+    </servicegroup>
+  </servicegroups>
+</monit>

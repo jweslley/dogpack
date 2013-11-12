@@ -1,0 +1,22 @@
+{
+  "name": "dogpack",
+  "version": "0.0.1",
+  "description": "Monit cluster management tool",
+  "homepage": "http://github.com/jweslley/dogpack",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "monit",
+    "monitoring"
+  ],
+  "author": "Jonhnny Weslley",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-cssmin": "~0.7.0",
+    "grunt-contrib-watch": "~0.5.3"
+  }
+}
