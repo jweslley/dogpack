@@ -48,7 +48,6 @@ Dogpack = Ember.Application.create({
 });
 
 Dogpack.Router.map(function() {
-  this.resource('about');
   this.resource('monit', { path: '/servers/:server_name' });
 });
 
