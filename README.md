@@ -1,5 +1,7 @@
 # Dogpack
 
+[![Travis](https://api.travis-ci.org/jweslley/dogpack.png)](http://travis-ci.org/jweslley/dogpack)
+
 Monit cluster management tool.
 
 
