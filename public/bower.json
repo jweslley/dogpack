@@ -1,9 +1,0 @@
-{
-  "name": "dogpack",
-  "version": "0.0.1",
-  "dependencies": {
-    "bootstrap": "~3.0.0",
-    "ember": "~1.1.2",
-    "moment": "~2.4.0"
-  }
-}

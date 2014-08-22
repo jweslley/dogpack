@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <title>Dogpack</title>
+    <style type="text/css">
+      body {
+        background-color: #fff;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 14px;
+      }
+      #container {
+        width: 90%;
+        max-width: 750px;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 5px 0;
+      }
+      li { color: #333; }
+      ul.servers > li {
+        padding: 10px;
+        margin: 5px;
+        border: 1px solid #ccc;
+      }
+      ul.servers > li.green { border-left: 5px solid #1abc9c; }
+      ul.servers > li.yellow { border-left: 5px solid #f1c40f; }
+      ul.servers > li.red { border-left: 5px solid #e74c3c; }
+      ul.servers > li.gray { border-left: 5px solid #bdc3c7; }
+      a {
+        text-decoration: none;
+        background: none repeat scroll 0 0 transparent;
+      }
+      li.title {
+        font-size: 1.5em;
+        font-weight: 500;
+        line-height: 1.1;
+        padding-bottom: 5px;
+      }
+      li.green li.title { color: #1abc9c; }
+      li.yellow li.title { color: #f1c40f; }
+      li.red li.title { color: #e74c3c; }
+      li.gray li.title { color: #bdc3c7; }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1>Dogpack</h1>
+      <ul class="servers">
+        <li class="green">
+          <a href="">
+            <ul class="info">
+              <li class="title">wicket.credishop.com.br</li>
+              <li>1.97 Gb - 172.20.7.55</li>
+              <li>Linux 2.6.32-5-amd64 x86_64</li>
+            </ul>
+          </a>
+        </li>
+        <li class="yellow">
+          <a href="">
+            <ul>
+              <li class="title">wicket.credishop.com.br</li>
+              <li>1.97 Gb - 172.20.7.55</li>
+              <li>Linux 2.6.32-5-amd64 x86_64</li>
+            </ul>
+          </a>
+        </li>
+        <li class="red">
+          <a href="">
+            <ul class="info">
+              <li class="title">wicket.credishop.com.br</li>
+              <li>1.97 Gb - 172.20.7.55</li>
+              <li>Linux 2.6.32-5-amd64 x86_64</li>
+            </ul>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

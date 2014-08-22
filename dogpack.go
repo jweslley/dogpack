@@ -5,47 +5,31 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
-	"strings"
 )
 
 var (
-	port       = flag.String("p", "2813", "Port to serve dogpack")
-	public_dir = flag.String("d", "./public", "Public directory location")
-)
-
-type DogPack map[string]*Monit
-
-var (
-	dogpack = &DogPack{}
-	queue   = make(chan *Monit)
+	queue = make(chan *Monit)
+	nodes = make(map[string]*Monit)
+	port  = flag.Int("p", 2813, "Port to serve dogpack")
 )
 
 func bootstrap() {
 	for {
 		monit := <-queue
-		(*dogpack)[monit.Server.Localhostname] = monit
+		nodes[monit.Server.Localhostname] = monit
 	}
 }
 
-func Collector(w http.ResponseWriter, req *http.Request) {
-	defer req.Body.Close()
-
-	monit := MonitFromXml(req.Body)
-	monit.IpAddress = strings.Split(req.RemoteAddr, ":")[0]
-	queue <- &monit
+func index(w http.ResponseWriter, req *http.Request) {
+	render(w, "index", tmplData{
+		"Title": "Dogpack",
+		"Nodes": nodes,
+	})
 }
 
-func Status(w http.ResponseWriter, req *http.Request) {
-	json, err := json.Marshal(dogpack)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-	} else {
-		w.Write(json)
-	}
-}
-
-func Action(w http.ResponseWriter, req *http.Request) {
+func action(w http.ResponseWriter, req *http.Request) {
 	defer req.Body.Close()
 
 	if req.Method != "POST" {
@@ -57,13 +41,32 @@ func Action(w http.ResponseWriter, req *http.Request) {
 	service := req.PostFormValue("service")
 	action := req.PostFormValue("action")
 
-	monit, found := (*dogpack)[server]
+	monit, found := nodes[server]
 	if found {
-		log.Printf("Server[%s]: Executing action '%s' on service '%s'", server, action, service)
+		log.Printf("Server[%s]: Executing action '%s' on service '%s'\n", server, action, service)
 		go monit.Server.Execute(service, action)
 	} else {
-		log.Printf("Server[%s]: Unable to execute action '%s' on service '%s'. Server not found.", server, action, service)
+		log.Printf("Server[%s]: Unable to execute action '%s' on service '%s'. Server not found.\n", server, action, service)
 	}
+}
+
+func status(w http.ResponseWriter, req *http.Request) {
+	json, err := json.Marshal(nodes)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else {
+		w.Header().Add("Content-Type", "application/json")
+		w.Write(json)
+	}
+}
+
+func collector(w http.ResponseWriter, req *http.Request) {
+	defer req.Body.Close()
+
+	monit := MonitFromXml(req.Body)
+	monit.IpAddress, _, _ = net.SplitHostPort(req.RemoteAddr)
+	log.Printf("Received status of %s (%s)\n", monit.Server.Localhostname, monit.IpAddress)
+	queue <- &monit
 }
 
 func main() {
@@ -71,12 +74,11 @@ func main() {
 
 	go bootstrap()
 
-	http.HandleFunc("/collector", Collector)
-	http.HandleFunc("/status", Status)
-	http.HandleFunc("/action", Action)
-	http.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir(*public_dir))))
+	http.HandleFunc("/", index)
+	http.HandleFunc("/status", status)
+	http.HandleFunc("/action", action)
+	http.HandleFunc("/collector", collector)
 
-	address := fmt.Sprintf(":%s", *port)
-	log.Println("Starting dogpack HTTP server at ", address)
-	log.Fatal(http.ListenAndServe(address, nil))
+	log.Printf("Starting dogpack HTTP server at :%d\n", *port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))
 }
