@@ -1,5 +1,7 @@
 package main
 
+//go:generate esc -o assets.go -prefix=public public
+
 import (
 	"encoding/json"
 	"flag"
@@ -7,6 +9,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
 )
 
 var (
@@ -20,13 +23,6 @@ func bootstrap() {
 		monit := <-queue
 		nodes[monit.Server.Localhostname] = monit
 	}
-}
-
-func index(w http.ResponseWriter, req *http.Request) {
-	render(w, "index", tmplData{
-		"Title": "Dogpack",
-		"Nodes": nodes,
-	})
 }
 
 func action(w http.ResponseWriter, req *http.Request) {
@@ -74,7 +70,12 @@ func main() {
 
 	go bootstrap()
 
-	http.HandleFunc("/", index)
+	useLocal := os.Getenv("USE_LOCAL_FS") == "true"
+	if useLocal {
+		log.Println("Using local assets from 'public' directory")
+	}
+
+	http.Handle("/", http.FileServer(FS(useLocal)))
 	http.HandleFunc("/status", status)
 	http.HandleFunc("/action", action)
 	http.HandleFunc("/collector", collector)
