@@ -7,7 +7,6 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"net"
 	"net/http"
 	"os"
 )
@@ -21,7 +20,7 @@ var (
 func bootstrap() {
 	for {
 		monit := <-queue
-		nodes[monit.Server.Localhostname] = monit
+		nodes[monit.Server.HttpAddress] = monit
 	}
 }
 
@@ -60,8 +59,7 @@ func collector(w http.ResponseWriter, req *http.Request) {
 	defer req.Body.Close()
 
 	monit := MonitFromXml(req.Body)
-	monit.IpAddress, _, _ = net.SplitHostPort(req.RemoteAddr)
-	log.Printf("Received status of %s (%s)\n", monit.Server.Localhostname, monit.IpAddress)
+	log.Printf("Received status of %s (%s)\n", monit.Server.HttpAddress, monit.Server.Localhostname)
 	queue <- &monit
 }
 

@@ -27,7 +27,6 @@ type Monit struct {
 	Id          string    `xml:"id,attr"          json:"id"`
 	Incarnation int       `xml:"incarnation,attr" json:"incarnation"`
 	Version     string    `xml:"version,attr"     json:"version"`
-	IpAddress   string    `                       json:"ip_address"`
 	Server      Server    `xml:"server"           json:"server"`
 	Platform    Platform  `xml:"platform"         json:"platform"`
 	Service     []Service `xml:"services>service" json:"services"`
