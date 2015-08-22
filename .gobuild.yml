@@ -1,9 +1,0 @@
-author: "Jonhnny Weslley"
-description: "Monit cluster management tool"
-filesets:
-  includes:
-  - README.md
-  - LICENSE
-  excludes:
-  - \.git
-  - .*\.go

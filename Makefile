@@ -1,6 +1,14 @@
+PROGRAM=dogpack
 VERSION=0.0.1
+LDFLAGS="-X main.programVersion=$(VERSION)"
 
 all: build
+
+deps:
+	go get ./...
+
+tools:
+	go get github.com/mjibson/esc
 
 build:
 	go build
@@ -11,13 +19,26 @@ generate:
 server:
 	USE_LOCAL_FS=true ./dogpack
 
-deps:
-	go get github.com/mjibson/esc
-	go get github.com/gobuild/gobuild3/packer
+test: deps
+	go test -v ./...
+
+qa:
+	go vet
+	golint
+	go test -coverprofile=.cover~
+	go tool cover -html=.cover~
 
 dist:
-	packer --os linux --arch amd64 --output dogpack-linux-amd64-$(VERSION).zip
-	packer --os linux --arch 386 --output dogpack-linux-386-$(VERSION).zip
+	@for os in linux; do \
+		for arch in 386 amd64; do \
+			target=$(PROGRAM)-$$os-$$arch-$(VERSION); \
+			echo Building $$target; \
+			GOOS=$$os GOARCH=$$arch go build -ldflags $(LDFLAGS) -o $$target/$(PROGRAM) ; \
+			cp ./README.md ./LICENSE $$target; \
+			tar -zcf $$target.tar.gz $$target; \
+			rm -rf $$target;                   \
+		done                                 \
+	done
 
 clean:
-	rm -f *.zip
+	rm -rf *.tar.gz
