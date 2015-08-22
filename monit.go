@@ -10,19 +10,6 @@ import (
 	"strings"
 )
 
-type ServiceType int
-
-const (
-	FILESYSTEM ServiceType = iota
-	DIRECTORY
-	FILE
-	PROCESS
-	HOST
-	SYSTEM
-	FIFO
-	PROGRAM
-)
-
 type Monit struct {
 	Id          string    `xml:"id,attr"          json:"id"`
 	Incarnation int       `xml:"incarnation,attr" json:"incarnation"`
@@ -54,15 +41,15 @@ type Platform struct {
 }
 
 type Service struct {
-	Name          string      `xml:"name,attr"      json:"name"`
-	Type          ServiceType `xml:"type"           json:"type"`
-	CollectedSec  int64       `xml:"collected_sec"  json:"-"`
-	CollectedUsec int64       `xml:"collected_usec" json:"-"`
-	Status        int         `xml:"status"         json:"status"`
-	Monitor       int         `xml:"monitor"        json:"monitor"`
-	MonitorMode   int         `xml:"monitormode"    json:"monitor_mode"`
-	PendingAction int         `xml:"pendingaction"  json:"pending_action"`
-	StatusMessage string      `xml:"status_message" json:"status_message,omitempty"`
+	Name          string `xml:"name,attr"      json:"name"`
+	Type          int    `xml:"type"           json:"type"`
+	CollectedSec  int64  `xml:"collected_sec"  json:"-"`
+	CollectedUsec int64  `xml:"collected_usec" json:"-"`
+	Status        int    `xml:"status"         json:"status"`
+	Monitor       int    `xml:"monitor"        json:"monitor"`
+	MonitorMode   int    `xml:"monitormode"    json:"monitor_mode"`
+	PendingAction int    `xml:"pendingaction"  json:"pending_action"`
+	StatusMessage string `xml:"status_message" json:"status_message,omitempty"`
 }
 
 func MonitFromXml(r io.Reader) Monit {

@@ -1,18 +1,11 @@
 // helper functions
 var SERVICE_TYPES = ["Filesystem", "Directory", "File", "Process", "Host", "System", "Fifo", "Program"];
 var STATUS_NAMES = ["Accessible", "Accessible", "Accessible", "Running", "Online with all services", "Running", "Accessible", "Status ok"];
+var MONITOR_STATUS = {0: "Not monitored", 1: "Monitored", 2: "Initializing", 4: "Waiting"};
 
-function monitorStatusDesc(status) {
-  switch (status) {
-    case 0: return "Not monitored";
-    case 1: return "Monitored";
-    case 2: return "Intitializing";
-    case 4: return "Waiting";
-  }
-}
 function serviceStatusDesc(service) {
   if (service.monitor == 0 || service.monitor == 2 || service.monitor == 4) {
-    return monitorStatusDesc(service.monitor);
+    return MONITOR_STATUS[service.monitor];
 
   } else if (service.status == 0) {
     return STATUS_NAMES[service.type];
